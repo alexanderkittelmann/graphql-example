@@ -1,26 +1,59 @@
 package de.gedoplan;
 
-import com.coxautodev.graphql.tools.SchemaParser;
+import de.gedoplan.persistence.ArticleRepository;
+import de.gedoplan.persistence.CustomerRepository;
+import de.gedoplan.persistence.OrderingRepository;
+import de.gedoplan.persistence.OrderpositionRepository;
 import graphql.schema.GraphQLSchema;
-import graphql.servlet.SimpleGraphQLServlet;
+import graphql.servlet.SimpleGraphQLHttpServlet;
+import io.leangen.graphql.GraphQLSchemaGenerator;
+import io.leangen.graphql.metadata.strategy.query.AnnotatedResolverBuilder;
 
-import javax.servlet.annotation.WebServlet;
+import javax.inject.Inject;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.ServletRegistration;
+import javax.servlet.annotation.WebListener;
 
 
-@WebServlet(urlPatterns = "/graphql")
-public class GraphQLEndpoint extends SimpleGraphQLServlet {
+@WebListener
+public class GraphQLEndpoint implements ServletContextListener {
 
-    public GraphQLEndpoint() {
-        super(buildSchema());
+    private static final String SERVLET_NAME = "MembershipGraphQLServlet";
+    private static final String[] SERVLET_URL = new String[]{"/graphql/*"};
+
+    @Inject
+    private ArticleRepository articleRepository;
+    @Inject
+    private CustomerRepository customerRepository;
+    @Inject
+    private OrderingRepository orderingRepository;
+    @Inject
+    private OrderpositionRepository orderpositionRepository;
+
+    @Override
+    public void contextInitialized(ServletContextEvent sce) {
+        GraphQLSchema schema = new GraphQLSchemaGenerator()
+                .withResolverBuilders(new AnnotatedResolverBuilder().withDefaultFilters())
+                .withOperationsFromSingleton(articleRepository, ArticleRepository.class)
+                .withOperationsFromSingleton(customerRepository, CustomerRepository.class)
+                .withOperationsFromSingleton(orderingRepository, OrderingRepository.class)
+                .withOperationsFromSingleton(orderpositionRepository, OrderpositionRepository.class)
+                .generate();
+
+        SimpleGraphQLHttpServlet.Builder builder = SimpleGraphQLHttpServlet.newBuilder(schema);
+
+        SimpleGraphQLHttpServlet graphQLServlet = builder.build();
+
+        ServletContext context = sce.getServletContext();
+
+        ServletRegistration.Dynamic servlet = context.addServlet(SERVLET_NAME, graphQLServlet);
+        servlet.addMapping(SERVLET_URL);
     }
 
-    public static GraphQLSchema buildSchema() {
-        LinkRepository linkRepository = new LinkRepository();
-        return SchemaParser.newParser()
-                .file("schema.graphqls")
-                .resolvers(new Query(linkRepository))
-                .build()
-                .makeExecutableSchema();
+    @Override
+    public void contextDestroyed(ServletContextEvent sce) {
     }
 }
 
