@@ -7,9 +7,6 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.ServletRegistration;
 import javax.servlet.annotation.WebListener;
 
-import de.gedoplan.model.Address;
-import de.gedoplan.model.Customer;
-import de.gedoplan.model.Name;
 import de.gedoplan.persistence.ArticleRepository;
 import de.gedoplan.persistence.CustomerRepository;
 import de.gedoplan.persistence.OrderingRepository;
@@ -36,8 +33,6 @@ public class GraphQLEndpoint implements ServletContextListener {
 
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
-		this.initTestData();
-
 		GraphQLSchema schema = new GraphQLSchemaGenerator()
 				.withResolverBuilders(new AnnotatedResolverBuilder().withDefaultFilters())
 				.withOperationsFromSingleton(articleRepository, ArticleRepository.class)
@@ -57,10 +52,5 @@ public class GraphQLEndpoint implements ServletContextListener {
 
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
-	}
-
-	public void initTestData() {
-		this.customerRepository
-				.persistCustomer(new Customer(new Name("Krömer", "Kurt"), new Address("Straße", "4", "12345", "Ort")));
 	}
 }
