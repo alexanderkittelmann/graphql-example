@@ -1,26 +1,28 @@
 package de.gedoplan.persistence;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import de.gedoplan.model.Address;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
+
 import de.gedoplan.model.Customer;
-import de.gedoplan.model.Name;
 
 public class CustomerRepository {
 
-	private List<Customer> customers;
-
-	public CustomerRepository() {
-		customers = new ArrayList<>();
-		customers.add(new Customer(1L, new Name(), new Address()));
-	}
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	public List<Customer> getAllCustomers() {
-		return customers;
+		return this.entityManager.createQuery("select c from Customer c", Customer.class).getResultList();
+	}
+	
+	public Customer getCustomer(Long id) {
+		return this.entityManager.find(Customer.class, id);
 	}
 
+	@Transactional
 	public void saveCustomer(Customer customer) {
-		customers.add(customer);
+		this.entityManager.persist(customer);
 	}
 }

@@ -1,11 +1,14 @@
 package de.gedoplan.model;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class Name {
 
 	private String surname;
 	private String firstname;
 
-	public Name() {
+	protected Name() {
 	}
 	
 	public Name(String surname, String firstname) {

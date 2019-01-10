@@ -1,6 +1,11 @@
 package de.gedoplan;
 
-import javax.servlet.annotation.WebServlet;
+import javax.inject.Inject;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.ServletRegistration;
+import javax.servlet.annotation.WebListener;
 
 import com.coxautodev.graphql.tools.SchemaParser;
 
@@ -8,23 +13,40 @@ import de.gedoplan.persistence.CustomerRepository;
 import graphql.schema.GraphQLSchema;
 import graphql.servlet.SimpleGraphQLHttpServlet;
 
+@WebListener
+public class GraphQLEndpoint implements ServletContextListener {
 
-@WebServlet(urlPatterns = "/graphql")
-public class GraphQLEndpoint extends AbstractGraphQLHttpServlet {
+	private static final String SERVLET_NAME = "GraphQLServlet";
+	private static final String[] SERVLET_URL = new String[] { "/graphql/*" };
 	
-	private CustomerRepository customerRepository;
+	@Inject
+	private CustomerQuery customerQuery;
+	
+	@Inject
+	private CustomerMutation customerMutation;
 
-    public GraphQLEndpoint() {
-    	super();
-    }
+	@Override
+	public void contextInitialized(ServletContextEvent sce) {
+		SimpleGraphQLHttpServlet.Builder builder = SimpleGraphQLHttpServlet.newBuilder(buildSchema());
 
-    public static GraphQLSchema buildSchema() {
-        CustomerRepository customerRepository = new CustomerRepository();
-        return SchemaParser.newParser()
-                .file("schema.graphqls")
-                .resolvers(new CustomerQuery(customerRepository), new CustomerMutation(customerRepository))
-                .build()
-                .makeExecutableSchema();
-    }
+		SimpleGraphQLHttpServlet graphQLServlet = builder.build();
+
+		ServletContext context = sce.getServletContext();
+
+		ServletRegistration.Dynamic servlet = context.addServlet(SERVLET_NAME, graphQLServlet);
+		servlet.addMapping(SERVLET_URL);
+	}
+
+	@Override
+	public void contextDestroyed(ServletContextEvent sce) {
+	}
+
+	public GraphQLSchema buildSchema() {
+		CustomerRepository customerRepository = new CustomerRepository();
+		return SchemaParser.newParser().file("schema.graphqls")
+				.resolvers(this.customerQuery, this.customerMutation).build()
+				.makeExecutableSchema();
+	} 
 }
+
 

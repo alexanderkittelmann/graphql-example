@@ -1,5 +1,8 @@
 package de.gedoplan.model;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class Address {
 
 	private String street;
@@ -7,7 +10,7 @@ public class Address {
 	private String zip;
 	private String city;
 	
-	public Address() {
+	protected Address() {
 	}
 
 	public Address(String street, String streetNumber, String zip, String city) {

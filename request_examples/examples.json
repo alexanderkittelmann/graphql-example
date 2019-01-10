@@ -1,11 +1,35 @@
-{
-  allCustomers {
+query {
+  customers {
     id
   }
 }
 
 mutation {
-  createArticle(id: 2, name: null, address: null) {
+  createCustomer(name: {firstname: "Tim", surname: "Schmitz"}, address: null) {
     id
+  }
+}
+
+Aliases
+{
+  id1: customers(id: 1) {
+    id
+  }
+  id2: customers(id: 2) {
+    id
+  }
+}
+
+Fragment
+fragment NameParts on Customer {
+  name {
+    firstname
+    surname
+  }  
+}
+
+query GetPerson {
+  customers(id: 1) {
+    ...NameParts
   }
 }
