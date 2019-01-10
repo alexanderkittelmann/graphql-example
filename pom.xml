@@ -29,7 +29,7 @@
         <dependency>
             <groupId>com.graphql-java</groupId>
             <artifactId>graphql-java</artifactId>
-            <version>9.2</version>
+            <version>2019-01-10T02-59-04-828bf5c</version>
         </dependency>
         <dependency>
             <groupId>com.graphql-java</groupId>
