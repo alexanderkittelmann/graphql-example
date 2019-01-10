@@ -1,14 +1,12 @@
 package de.gedoplan.model;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
 public class Article {
 
     @Id
-    @GeneratedValue
     private Long id;
 
     private int articlenumber;
@@ -18,7 +16,7 @@ public class Article {
     protected Article() {
 	}
 
-    public Article(int articlenumber, String name, String description) {
+    public Article(Long id, int articlenumber, String name, String description) {
         this.articlenumber = articlenumber;
         this.name = name;
         this.description = description;

@@ -22,7 +22,7 @@ import io.leangen.graphql.metadata.strategy.query.AnnotatedResolverBuilder;
 @WebListener
 public class GraphQLEndpoint implements ServletContextListener {
 
-	private static final String SERVLET_NAME = "MembershipGraphQLServlet";
+	private static final String SERVLET_NAME = "GraphQLServlet";
 	private static final String[] SERVLET_URL = new String[] { "/graphql/*" };
 
 	@Inject

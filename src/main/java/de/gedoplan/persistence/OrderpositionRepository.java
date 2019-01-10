@@ -1,17 +1,16 @@
 package de.gedoplan.persistence;
 
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
+
 import de.gedoplan.model.Orderposition;
 import io.leangen.graphql.annotations.GraphQLArgument;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
-import java.util.List;
-
-@RequestScoped
 public class OrderpositionRepository {
 
     @Inject
