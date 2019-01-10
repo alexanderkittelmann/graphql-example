@@ -8,13 +8,10 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import io.leangen.graphql.annotations.GraphQLId;
-
 @Entity
 public class Ordering {
 
     @Id
-    @GraphQLId
     private Long id;
 
     @OneToMany

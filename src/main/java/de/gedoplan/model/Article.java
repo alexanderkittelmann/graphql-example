@@ -3,13 +3,10 @@ package de.gedoplan.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import io.leangen.graphql.annotations.GraphQLId;
-
 @Entity
 public class Article {
 
     @Id
-    @GraphQLId
     private Long id;
 
     private int articlenumber;
