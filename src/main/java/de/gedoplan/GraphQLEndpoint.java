@@ -1,5 +1,15 @@
 package de.gedoplan;
 
+import javax.inject.Inject;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.ServletRegistration;
+import javax.servlet.annotation.WebListener;
+
+import de.gedoplan.model.Address;
+import de.gedoplan.model.Customer;
+import de.gedoplan.model.Name;
 import de.gedoplan.persistence.ArticleRepository;
 import de.gedoplan.persistence.CustomerRepository;
 import de.gedoplan.persistence.OrderingRepository;
@@ -9,51 +19,48 @@ import graphql.servlet.SimpleGraphQLHttpServlet;
 import io.leangen.graphql.GraphQLSchemaGenerator;
 import io.leangen.graphql.metadata.strategy.query.AnnotatedResolverBuilder;
 
-import javax.inject.Inject;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.ServletRegistration;
-import javax.servlet.annotation.WebListener;
-
-
 @WebListener
 public class GraphQLEndpoint implements ServletContextListener {
 
-    private static final String SERVLET_NAME = "MembershipGraphQLServlet";
-    private static final String[] SERVLET_URL = new String[]{"/graphql/*"};
+	private static final String SERVLET_NAME = "MembershipGraphQLServlet";
+	private static final String[] SERVLET_URL = new String[] { "/graphql/*" };
 
-    @Inject
-    private ArticleRepository articleRepository;
-    @Inject
-    private CustomerRepository customerRepository;
-    @Inject
-    private OrderingRepository orderingRepository;
-    @Inject
-    private OrderpositionRepository orderpositionRepository;
+	@Inject
+	private ArticleRepository articleRepository;
+	@Inject
+	private CustomerRepository customerRepository;
+	@Inject
+	private OrderingRepository orderingRepository;
+	@Inject
+	private OrderpositionRepository orderpositionRepository;
 
-    @Override
-    public void contextInitialized(ServletContextEvent sce) {
-        GraphQLSchema schema = new GraphQLSchemaGenerator()
-                .withResolverBuilders(new AnnotatedResolverBuilder().withDefaultFilters())
-                .withOperationsFromSingleton(articleRepository, ArticleRepository.class)
-                .withOperationsFromSingleton(customerRepository, CustomerRepository.class)
-                .withOperationsFromSingleton(orderingRepository, OrderingRepository.class)
-                .withOperationsFromSingleton(orderpositionRepository, OrderpositionRepository.class)
-                .generate();
+	@Override
+	public void contextInitialized(ServletContextEvent sce) {
+		this.initTestData();
 
-        SimpleGraphQLHttpServlet.Builder builder = SimpleGraphQLHttpServlet.newBuilder(schema);
+		GraphQLSchema schema = new GraphQLSchemaGenerator()
+				.withResolverBuilders(new AnnotatedResolverBuilder().withDefaultFilters())
+				.withOperationsFromSingleton(articleRepository, ArticleRepository.class)
+				.withOperationsFromSingleton(customerRepository, CustomerRepository.class)
+				.withOperationsFromSingleton(orderingRepository, OrderingRepository.class)
+				.withOperationsFromSingleton(orderpositionRepository, OrderpositionRepository.class).generate();
 
-        SimpleGraphQLHttpServlet graphQLServlet = builder.build();
+		SimpleGraphQLHttpServlet.Builder builder = SimpleGraphQLHttpServlet.newBuilder(schema);
 
-        ServletContext context = sce.getServletContext();
+		SimpleGraphQLHttpServlet graphQLServlet = builder.build();
 
-        ServletRegistration.Dynamic servlet = context.addServlet(SERVLET_NAME, graphQLServlet);
-        servlet.addMapping(SERVLET_URL);
-    }
+		ServletContext context = sce.getServletContext();
 
-    @Override
-    public void contextDestroyed(ServletContextEvent sce) {
-    }
+		ServletRegistration.Dynamic servlet = context.addServlet(SERVLET_NAME, graphQLServlet);
+		servlet.addMapping(SERVLET_URL);
+	}
+
+	@Override
+	public void contextDestroyed(ServletContextEvent sce) {
+	}
+
+	public void initTestData() {
+		this.customerRepository
+				.persistCustomer(new Customer(new Name("Krömer", "Kurt"), new Address("Straße", "4", "12345", "Ort")));
+	}
 }
-

@@ -18,9 +18,14 @@ public class OrderpositionRepository {
     private EntityManager entityManager;
 
     @GraphQLQuery(name = "orderpositions")
-    public List<Orderposition> getAllCustomers() {
+    public List<Orderposition> getAllOrderposition() {
         return this.entityManager.createQuery("select op from Orderposition op", Orderposition.class)
                 .getResultList();
+    }
+
+    @GraphQLQuery(name = "orderposition")
+    public Orderposition getOrderposition(@GraphQLArgument(name = "id") Long id) {
+        return this.entityManager.find(Orderposition.class, id);
     }
 
     @Transactional

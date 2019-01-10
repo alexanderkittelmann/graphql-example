@@ -1,17 +1,16 @@
 package de.gedoplan.persistence;
 
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
+
 import de.gedoplan.model.Customer;
 import io.leangen.graphql.annotations.GraphQLArgument;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
-import java.util.List;
-
-@RequestScoped
 public class CustomerRepository {
 
     @Inject
@@ -24,7 +23,7 @@ public class CustomerRepository {
     }
 
     @GraphQLQuery(name = "customer")
-    public Customer getCustomer(@GraphQLArgument(name = "customerId") int id) {
+    public Customer getCustomer(@GraphQLArgument(name = "id") int id) {
         return this.entityManager.find(Customer.class, id);
     }
 

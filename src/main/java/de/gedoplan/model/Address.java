@@ -8,7 +8,17 @@ public class Address {
     private String street;
     private String streetNumber;
     private String zip;
-    private String city;
+    private String city;    
+
+    protected Address() {
+	}
+
+	public Address(String street, String streetNumber, String zip, String city) {
+        this.street = street;
+        this.streetNumber = streetNumber;
+        this.zip = zip;
+        this.city = city;
+    }
 
     public String getStreet() {
         return street;

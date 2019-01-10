@@ -7,6 +7,14 @@ public class Name {
 
     private String surname;
     private String firstname;
+    
+    protected Name() {
+	}
+
+    public Name(String surname, String firstname) {
+        this.surname = surname;
+        this.firstname = firstname;
+    }
 
     public String getSurname() {
         return surname;
