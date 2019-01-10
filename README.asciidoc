@@ -1,1 +1,19 @@
 = GraphQL Beispiel
+
+== Installation
+
+=== Benoetigte Tools
+* Java
+* Maven
+* Wildfly Application Server
+
+=== Starten der Anwendung
+1. Projekt mit Maven (mvn install) bauen
+2. Enstandenes war-File in Wildfly Application Server deployen
+
+== Nutzung der Beispiel-Anwendung
+Über "http://localhost:8080/graphql-example" kann auf GraphiQL (in-browser IDE zum Entdecken von GraphQL) zugegriffen
+werden. Mit GraphiQL ist es möglich über den Browser Requests an die GraphQL-Schnittstelle zu tätigen.
+Mit GraphiQL können die Beispiele in der examples.json ausgefuehrt werden. Die Anwendung nutzt eine H2-InMemory-Datenbank.
+Diese Datenbank wird zum Anwendungsstart mit Beispieldaten gefüllt.
+
