@@ -1,0 +1,11 @@
+{
+  articles {
+    id
+  }
+}
+
+mutation {
+  createarticle(article: {id : 1, articlenumber: 12345, name: "testname", description: "testdescription"}) {
+    id
+  }
+}
