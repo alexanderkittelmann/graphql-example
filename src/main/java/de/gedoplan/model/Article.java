@@ -1,7 +1,5 @@
 package de.gedoplan.model;
 
-import io.leangen.graphql.annotations.GraphQLId;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -9,10 +7,19 @@ import javax.persistence.Id;
 public class Article {
 
     @Id
-    @GraphQLId
     private Long id;
 
     private int articlenumber;
     private String name;
     private String description;
+    
+	public Article(Long id, int articlenumber, String name, String description) {
+		super();
+		this.id = id;
+		this.articlenumber = articlenumber;
+		this.name = name;
+		this.description = description;
+	}
+    
+    
 }

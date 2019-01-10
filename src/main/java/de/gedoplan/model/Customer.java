@@ -1,7 +1,5 @@
 package de.gedoplan.model;
 
-import io.leangen.graphql.annotations.GraphQLId;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -9,7 +7,6 @@ import javax.persistence.Id;
 public class Customer {
 
     @Id
-    @GraphQLId
     private Long id;
 
     private Name name;

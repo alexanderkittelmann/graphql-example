@@ -1,26 +1,23 @@
 package de.gedoplan;
 
-import io.leangen.graphql.annotations.GraphQLArgument;
-import io.leangen.graphql.annotations.GraphQLMutation;
-import io.leangen.graphql.annotations.GraphQLQuery;
-
-import javax.enterprise.context.ApplicationScoped;
 import java.util.ArrayList;
 import java.util.List;
 
-@ApplicationScoped
 public class LinkRepository {
-    private List<Link> links = new ArrayList<>();
+    private final List<Link> links;
 
-    @GraphQLQuery(name = "links")
-    public List<Link> links() {
-        links.add(new Link(1L, "url", "bla"));
+    public LinkRepository() {
+        links = new ArrayList<>();
+        //add some links to start off with
+        links.add(new Link("http://howtographql.com", "Your favorite GraphQL page"));
+        links.add(new Link("http://graphql.org/learn/", "The official docks"));
+    }
+
+    public List<Link> getAllLinks() {
         return links;
     }
 
-    @GraphQLMutation(name = "createLink")
-    public Link saveLink(@GraphQLArgument(name = "link") Link link) {
+    public void saveLink(Link link) {
         links.add(link);
-        return links.get(links.size() - 1);
     }
 }
