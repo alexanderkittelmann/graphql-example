@@ -1,26 +1,7 @@
-type Article {  
-  id: Long
-  articlenumber: int
-  name: String
-  description: String
-}
-
 type Customer {  
   id: Long
   name: Name
   address: Address
-}
-
-type Order {  
-  id: Long
-  orderpositionSet: [Orderposition]
-  customer: Customer
-}
-
-type Orderposition {  
-  id: Long
-  position: int
-  article: Article
 }
 
 type Address {
@@ -30,15 +11,32 @@ type Address {
   city: String
 }
 
-type Name {
-  surname: String
-  firstname: String;
+input AddressInput {
+  street: String
+  streetNumber: String
+  zip: String
+  city: String
 }
 
-type Query {
-  allLinks: [Link]
+type Name {
+  surname: String
+  firstname: String
+}
+
+input NameInput {
+  surname: String
+  firstname: String
+}
+
+type CustomerQuery {
+  allCustomers: [Customer]
+}
+
+type CustomerMutation {
+  createCustomer(id: Long, name: NameInput, address: AddressInput): Customer
 }
 
 schema {
-  query: Query
+  query: CustomerQuery
+  mutation: CustomerMutation
 }

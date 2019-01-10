@@ -1,0 +1,11 @@
+{
+  allCustomers {
+    id
+  }
+}
+
+mutation {
+  createArticle(id: 2, name: null, address: null) {
+    id
+  }
+}

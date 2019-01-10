@@ -1,18 +1,19 @@
 package de.gedoplan.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
-@Entity
 public class Customer {
 
-    @Id
     private Long id;
 
     private Name name;
     private Address address;
+    
+    public Customer(Long id, Name name, Address address) {
+		this.id = id;
+		this.name = name;
+		this.address = address;
+	}
 
-    public Long getId() {
+	public Long getId() {
         return id;
     }
 

@@ -1,44 +1,51 @@
 package de.gedoplan.model;
 
-import javax.persistence.Embeddable;
-
-@Embeddable
 public class Address {
 
-    private String street;
-    private String streetNumber;
-    private String zip;
-    private String city;
+	private String street;
+	private String streetNumber;
+	private String zip;
+	private String city;
+	
+	public Address() {
+	}
 
-    public String getStreet() {
-        return street;
-    }
+	public Address(String street, String streetNumber, String zip, String city) {
+		this.street = street;
+		this.streetNumber = streetNumber;
+		this.zip = zip;
+		this.city = city;
+	}
 
-    public void setStreet(String street) {
-        this.street = street;
-    }
+	public String getStreet() {
+		return street;
+	}
 
-    public String getStreetNumber() {
-        return streetNumber;
-    }
+	public void setStreet(String street) {
+		this.street = street;
+	}
 
-    public void setStreetNumber(String streetNumber) {
-        this.streetNumber = streetNumber;
-    }
+	public String getStreetNumber() {
+		return streetNumber;
+	}
 
-    public String getZip() {
-        return zip;
-    }
+	public void setStreetNumber(String streetNumber) {
+		this.streetNumber = streetNumber;
+	}
 
-    public void setZip(String zip) {
-        this.zip = zip;
-    }
+	public String getZip() {
+		return zip;
+	}
 
-    public String getCity() {
-        return city;
-    }
+	public void setZip(String zip) {
+		this.zip = zip;
+	}
 
-    public void setCity(String city) {
-        this.city = city;
-    }
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
 }
