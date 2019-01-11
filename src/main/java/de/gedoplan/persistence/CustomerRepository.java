@@ -25,7 +25,7 @@ public class CustomerRepository {
     }
 
     @GraphQLQuery(name = "customer")
-    public Customer getCustomer(@GraphQLArgument(name = "id") int id) {
+    public Customer getCustomer(@GraphQLArgument(name = "id") Long id) {
         return this.entityManager.find(Customer.class, id);
     }
 
